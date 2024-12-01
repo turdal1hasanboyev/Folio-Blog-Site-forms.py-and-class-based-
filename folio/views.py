@@ -26,7 +26,7 @@ url = request.META.get('HTTP_REFERER') # 1ta oldingi sahifani qaytaradi
 class HomePageView(View):
     template_name = 'index.html'
 
-    def get_context_data(self, request, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         # Contextni tayyorlash
 
         context = {}
