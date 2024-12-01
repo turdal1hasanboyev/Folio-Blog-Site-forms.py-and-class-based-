@@ -10,14 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
+from pathlib import Path # for relative imports to work
 
-import environ
-import os
+import environ # for .env
+import os # for os.environ.get() or os.path.join()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# env settings
 env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
@@ -33,7 +34,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*"] # "localhost"
 
-AUTH_USER_MODEL = 'folio.User'
+AUTH_USER_MODEL = 'folio.User' # auth user model
 
 
 # Application definition
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     },
 }
 
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,16 +83,21 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    #django-query-counter
+    #django-query-counter middleware
     'query_counter.middleware.DjangoQueryCounterMiddleware',
+
+    # white noise middleware
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+# root url conf
 ROOT_URLCONF = 'config.urls'
 
+# templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,6 +113,7 @@ TEMPLATES = [
     },
 ]
 
+# wsgi application
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -161,7 +169,9 @@ LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'Asia/Tashkent'
 
-USE_I18N = True
+USE_I18N = True # for language
+
+USE_I10N = True # for number
 
 USE_TZ = True
 
@@ -180,6 +190,13 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+STORAGES = {
+    # ... white noise ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -27,18 +27,24 @@ from .errors import CustomPageNotFoundView
 
 
 urlpatterns = [
+    #admin
     path('folio/', admin.site.urls),
 
+    # ckeditor
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
+    # media, static
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 
+    # local path
     path('', include('folio.urls')),
 ]
 
+#page not found
 handler404 = CustomPageNotFoundView.as_view()
 
+# static and media files
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
